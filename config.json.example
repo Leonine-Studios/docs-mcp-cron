@@ -1,0 +1,82 @@
+{
+  "global-settings": {
+    "cronSchedule": "0 2 * * *",
+    "telemetryEnabled": false,
+    "scraper": {
+      "maxPages": 1000,
+      "maxDepth": 3,
+      "maxConcurrency": 3,
+      "pageTimeoutMs": 5000,
+      "browserTimeoutMs": 30000,
+      "fetcher": {
+        "maxRetries": 6,
+        "baseDelayMs": 1000
+      }
+    }
+  },
+  "websites": [
+    {
+      "name": "example-website",
+      "url": "https://example.com/docs",
+      "description": "Example documentation site with default global settings",
+      "enabled": true
+    },
+    {
+      "name": "custom-schedule-site",
+      "url": "https://docs.example.com",
+      "description": "Site with custom cron schedule (runs at 3 AM instead of 2 AM)",
+      "enabled": true,
+      "settings": {
+        "cronSchedule": "0 3 * * *"
+      }
+    },
+    {
+      "name": "custom-scraper-site",
+      "url": "https://api.example.com/documentation",
+      "description": "Site with custom scraper settings (fewer pages, less depth)",
+      "enabled": true,
+      "settings": {
+        "scraper": {
+          "maxPages": 500,
+          "maxDepth": 2,
+          "maxConcurrency": 2
+        }
+      }
+    },
+    {
+      "name": "fully-customized-site",
+      "url": "https://help.example.com",
+      "description": "Site with both custom schedule and scraper settings",
+      "enabled": true,
+      "settings": {
+        "cronSchedule": "0 4 * * *",
+        "scraper": {
+          "maxPages": 200,
+          "maxDepth": 1,
+          "maxConcurrency": 1,
+          "pageTimeoutMs": 10000,
+          "browserTimeoutMs": 60000,
+          "fetcher": {
+            "maxRetries": 3,
+            "baseDelayMs": 2000
+          }
+        }
+      }
+    },
+    {
+      "name": "local-docs",
+      "url": "file:///path/to/local/documentation",
+      "description": "Local documentation using file:// protocol",
+      "enabled": true,
+      "settings": {
+        "cronSchedule": "0 1 * * *"
+      }
+    },
+    {
+      "name": "disabled-site",
+      "url": "https://disabled.example.com",
+      "description": "This site is disabled and will be skipped",
+      "enabled": false
+    }
+  ]
+}

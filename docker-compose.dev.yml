@@ -1,0 +1,17 @@
+services:
+  cron-docs-mcp:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: cron-docs-mcp:dev
+    container_name: cron-docs-mcp-dev
+    ports:
+      - "6280:6280"  # Expose port for local testing
+    volumes:
+      - ./docs-mcp-data:/data
+      - ./config.json:/config.json:ro  # Mount your config.json here
+      - ./logs:/var/log  # Mount logs directory
+    environment:
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - DOCS_MCP_TELEMETRY=false
+    restart: unless-stopped

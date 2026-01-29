@@ -1,0 +1,12 @@
+services:
+  cron-docs-mcp:
+    image: ghcr.io/leonine-studios/docs-mcp-cron:latest
+    container_name: cron-docs-mcp
+    volumes:
+      - ./docs-mcp-data:/data
+      - ./config.json:/config.json:ro  # Mount your config.json here
+      - ./logs:/var/log  # Mount logs directory
+    environment:
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - DOCS_MCP_TELEMETRY=false
+    restart: unless-stopped

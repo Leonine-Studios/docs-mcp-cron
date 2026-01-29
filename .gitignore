@@ -1,0 +1,12 @@
+node_modules/
+npm-debug.log
+yarn-error.log
+.DS_Store
+*.log
+.env
+.env.local
+
+# Docs MCP Server data
+docs-mcp-data/
+config.json
+logs/
