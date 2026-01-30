@@ -10,6 +10,7 @@ services:
     volumes:
       - ./docs-mcp-data:/data
       - ./config.json:/config.json:ro  # Mount your config.json here
+      - ./docs-mcp-config.yaml:/config/config.yaml:ro  # Custom config for increased doc size
       - ./logs:/var/log  # Mount logs directory
     environment:
       - OPENAI_API_KEY=${OPENAI_API_KEY}
