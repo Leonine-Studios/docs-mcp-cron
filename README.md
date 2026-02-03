@@ -57,7 +57,7 @@ services:
     environment:
       - OPENAI_API_KEY=${OPENAI_API_KEY}
       - DOCS_MCP_TELEMETRY=false
-      - DOCS_MCP_SCRAPER_DOCUMENT_MAX_SIZE=52428800  # 50MB max document size
+      - DOCS_MCP_SCRAPER_DOCUMENT_MAX_SIZE=${DOCS_MCP_SCRAPER_DOCUMENT_MAX_SIZE}
     restart: unless-stopped
 ```
 
@@ -65,9 +65,16 @@ services:
 
 - `OPENAI_API_KEY` - Your OpenAI API key for embeddings
 - `DOCS_MCP_TELEMETRY` - Enable/disable telemetry (default: `true`)
-- `DOCS_MCP_SCRAPER_DOCUMENT_MAX_SIZE` - Maximum size in bytes for PDF/Office documents (default: 10485760 = 10MB)
+- `DOCS_MCP_SCRAPER_DOCUMENT_MAX_SIZE` - (Optional) Maximum size in bytes for PDF/Office documents (default: 10485760 = 10MB)
+  - To allow larger documents (e.g., 50MB), set: `export DOCS_MCP_SCRAPER_DOCUMENT_MAX_SIZE=52428800`
 
-For additional environment variables, see the [upstream configuration documentation](https://github.com/arabold/docs-mcp-server/blob/main/docs/setup/configuration.md).
+You can set environment variables in your shell or create a `.env` file:
+
+```bash
+export OPENAI_API_KEY="your-key-here"
+# Optional: Increase document size limit to 50MB
+export DOCS_MCP_SCRAPER_DOCUMENT_MAX_SIZE=52428800
+```
 
 ## Testing
 

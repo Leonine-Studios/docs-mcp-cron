@@ -48,6 +48,7 @@ cat > "$ENV_VARS_FILE" << EOF
 export OPENAI_API_KEY=${OPENAI_API_KEY}
 export DOCS_MCP_TELEMETRY=${DOCS_MCP_TELEMETRY:-false}
 export DOCS_MCP_EMBEDDING_MODEL=${DOCS_MCP_EMBEDDING_MODEL:-openai:text-embedding-3-small}
+export DOCS_MCP_SCRAPER_DOCUMENT_MAX_SIZE=${DOCS_MCP_SCRAPER_DOCUMENT_MAX_SIZE}
 export PATH=/usr/local/bin:/usr/bin:/bin
 EOF
 
@@ -108,4 +109,5 @@ echo ""
 echo "========================================"
 echo "Starting MCP server..."
 echo "========================================"
+echo "Document max size: ${DOCS_MCP_SCRAPER_DOCUMENT_MAX_SIZE:-default} bytes"
 exec node --enable-source-maps dist/index.js "$@"
