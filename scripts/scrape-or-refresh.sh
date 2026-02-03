@@ -62,15 +62,8 @@ process_website() {
     echo "URL: $url"
     echo "========================================"
     
-    # Config file path (if exists, pass to CLI)
-    CONFIG_ARG=""
-    if [ -f "/config/config.yaml" ]; then
-        CONFIG_ARG="--config /config/config.yaml"
-        echo "Using custom config: /config/config.yaml"
-    fi
-    
     # Check if library already exists
-    EXISTING_LIBS=$(node /app/dist/index.js $CONFIG_ARG list 2>/dev/null || echo "")
+    EXISTING_LIBS=$(node /app/dist/index.js list 2>/dev/null || echo "")
     
     # Build scraper arguments
     SCRAPER_ARGS=$(build_scraper_args "$website_json")
@@ -79,19 +72,19 @@ process_website() {
         echo "Library exists - refreshing..."
         if [ -n "$SCRAPER_ARGS" ]; then
             echo "Using custom scraper settings: $SCRAPER_ARGS"
-            node /app/dist/index.js $CONFIG_ARG refresh "$name" $SCRAPER_ARGS
+            node /app/dist/index.js refresh "$name" $SCRAPER_ARGS
         else
             echo "Using default scraper settings"
-            node /app/dist/index.js $CONFIG_ARG refresh "$name"
+            node /app/dist/index.js refresh "$name"
         fi
     else
         echo "New library - performing initial scrape..."
         if [ -n "$SCRAPER_ARGS" ]; then
             echo "Using custom scraper settings: $SCRAPER_ARGS"
-            node /app/dist/index.js $CONFIG_ARG scrape "$name" "$url" $SCRAPER_ARGS
+            node /app/dist/index.js scrape "$name" "$url" $SCRAPER_ARGS
         else
             echo "Using default scraper settings"
-            node /app/dist/index.js $CONFIG_ARG scrape "$name" "$url"
+            node /app/dist/index.js scrape "$name" "$url"
         fi
     fi
     

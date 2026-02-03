@@ -1,2 +1,0 @@
-document:
-  maxSize: 52428800  # 50 MB (increased from default 10 MB)
