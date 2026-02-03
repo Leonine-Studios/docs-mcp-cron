@@ -14,4 +14,5 @@ services:
     environment:
       - OPENAI_API_KEY=${OPENAI_API_KEY}
       - DOCS_MCP_TELEMETRY=false
+      - DOCS_MCP_SCRAPER_DOCUMENT_MAX_SIZE=52428800  # 50MB max document size
     restart: unless-stopped
