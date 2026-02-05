@@ -95,6 +95,12 @@ echo ""
 echo "Starting cron daemon..."
 cron
 
+# Start config file watcher in background
+echo ""
+echo "Starting config.json file watcher..."
+/usr/local/bin/watch-config.sh >> /var/log/docs-mcp-config-watcher.log 2>&1 &
+echo "✓ Config watcher started (logs: /var/log/docs-mcp-config-watcher.log)"
+
 # Display installed cron jobs
 echo ""
 echo "Installed cron jobs:"
