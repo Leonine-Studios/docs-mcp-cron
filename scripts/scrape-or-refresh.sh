@@ -33,19 +33,13 @@ build_scraper_args() {
     local max_pages=$(get_scraper_setting "$website_json" "maxPages")
     local max_depth=$(get_scraper_setting "$website_json" "maxDepth")
     local max_concurrency=$(get_scraper_setting "$website_json" "maxConcurrency")
-    local page_timeout=$(get_scraper_setting "$website_json" "pageTimeoutMs")
-    local browser_timeout=$(get_scraper_setting "$website_json" "browserTimeoutMs")
-    local max_retries=$(get_scraper_setting "$website_json" "fetcher.maxRetries")
-    local base_delay=$(get_scraper_setting "$website_json" "fetcher.baseDelayMs")
+    local scope=$(get_scraper_setting "$website_json" "scope")
     
     # Build CLI arguments (only if specified, otherwise use image defaults)
     [ -n "$max_pages" ] && args="$args --max-pages $max_pages"
     [ -n "$max_depth" ] && args="$args --max-depth $max_depth"
     [ -n "$max_concurrency" ] && args="$args --max-concurrency $max_concurrency"
-    [ -n "$page_timeout" ] && args="$args --page-timeout $page_timeout"
-    [ -n "$browser_timeout" ] && args="$args --browser-timeout $browser_timeout"
-    [ -n "$max_retries" ] && args="$args --max-retries $max_retries"
-    [ -n "$base_delay" ] && args="$args --base-delay $base_delay"
+    [ -n "$scope" ] && args="$args --scope $scope"
     
     echo "$args"
 }

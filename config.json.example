@@ -6,19 +6,14 @@
       "maxPages": 1000,
       "maxDepth": 3,
       "maxConcurrency": 3,
-      "pageTimeoutMs": 5000,
-      "browserTimeoutMs": 30000,
-      "fetcher": {
-        "maxRetries": 6,
-        "baseDelayMs": 1000
-      }
+      "scope": "hostname"
     }
   },
   "websites": [
     {
       "name": "example-website",
       "url": "https://example.com/docs",
-      "description": "Example documentation site with default global settings",
+      "description": "Example documentation site using global settings (includes PDF indexing)",
       "enabled": true
     },
     {
@@ -33,20 +28,21 @@
     {
       "name": "custom-scraper-site",
       "url": "https://api.example.com/documentation",
-      "description": "Site with custom scraper settings (fewer pages, less depth)",
+      "description": "Site with custom scraper settings (overrides global - fewer pages, less depth, subpages only)",
       "enabled": true,
       "settings": {
         "scraper": {
           "maxPages": 500,
           "maxDepth": 2,
-          "maxConcurrency": 2
+          "maxConcurrency": 2,
+          "scope": "subpages"
         }
       }
     },
     {
       "name": "fully-customized-site",
       "url": "https://help.example.com",
-      "description": "Site with both custom schedule and scraper settings",
+      "description": "Site with custom schedule and scraper settings (overrides global)",
       "enabled": true,
       "settings": {
         "cronSchedule": "0 4 * * *",
@@ -54,12 +50,7 @@
           "maxPages": 200,
           "maxDepth": 1,
           "maxConcurrency": 1,
-          "pageTimeoutMs": 10000,
-          "browserTimeoutMs": 60000,
-          "fetcher": {
-            "maxRetries": 3,
-            "baseDelayMs": 2000
-          }
+          "scope": "subpages"
         }
       }
     },
@@ -77,6 +68,12 @@
       "url": "https://disabled.example.com",
       "description": "This site is disabled and will be skipped",
       "enabled": false
-    }
+    },
+    {
+      "name": "site-with-pdfs",
+      "url": "https://example.com/documentation",
+      "description": "Site with linked PDF documents - uses global scope:hostname to index PDFs",
+      "enabled": true
+    },
   ]
 }

@@ -14,7 +14,10 @@ Create a `config.json` file:
 {
   "global-settings": {
     "cronSchedule": "0 2 * * *",
-    "telemetryEnabled": false
+    "telemetryEnabled": false,
+    "scraper": {
+      "scope": "hostname"
+    }
   },
   "websites": [
     {
@@ -33,6 +36,27 @@ Create a `config.json` file:
 - `0 0 * * 0` - Weekly on Sunday
 
 See [config.json.example](config.json.example) for all available options.
+
+### Indexing PDF Documents
+
+The scraper automatically indexes PDF files linked from HTML pages. For PDFs to be discovered and crawled, set `scope: "hostname"` in global scraper settings:
+
+```json
+{
+  "global-settings": {
+    "cronSchedule": "0 2 * * *",
+    "telemetryEnabled": false,
+    "scraper": {
+      "maxDepth": 2,
+      "scope": "hostname"
+    }
+  }
+}
+```
+
+**Why this is needed:** The default scope is `"subpages"` which only follows links under the starting URL path. PDFs are often in different paths (like `/documents/`), so `"hostname"` allows following all links on the same domain.
+
+**Note:** Large PDFs may be skipped if they exceed the document size limit. Set `DOCS_MCP_SCRAPER_DOCUMENT_MAX_SIZE=52428800` (50MB) in your environment if needed.
 
 ## Deployment
 
