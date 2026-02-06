@@ -76,11 +76,37 @@ export OPENAI_API_KEY="your-key-here"
 export DOCS_MCP_SCRAPER_DOCUMENT_MAX_SIZE=52428800
 ```
 
+## Library Synchronization
+
+The system automatically keeps libraries in sync with your `config.json` in **real-time**:
+
+- **Real-Time Cleanup**: When you edit `config.json` and remove a website, its scraped library is **automatically deleted within seconds**
+- **File Watcher**: A background process monitors `config.json` for changes and triggers sync immediately
+- **Startup Sync**: An initial sync runs when the container starts to catch any changes while it was down
+- **No Orphaned Data**: Only websites currently in your configuration will have libraries stored  
+- **Manual Sync**: You can also manually trigger sync anytime with: `docker exec cron-docs-mcp sync-libraries.sh`
+
+### How It Works:
+
+1. You edit `config.json` and remove a website
+2. The file watcher detects the change within seconds
+3. It validates the JSON syntax
+4. If valid, it automatically runs the sync script
+5. Orphaned libraries are deleted immediately
+
+You can monitor the watcher logs:
+```bash
+docker exec cron-docs-mcp tail -f /var/log/docs-mcp-config-watcher.log
+```
+
 ## Testing
 
 ```bash
-# Trigger initial scrape
+# Trigger initial scrape (also runs sync to remove orphaned libraries)
 docker exec cron-docs-mcp scrape-or-refresh.sh
+
+# Manually sync libraries with config (remove orphaned libraries)
+docker exec cron-docs-mcp sync-libraries.sh
 
 # List indexed libraries
 docker exec cron-docs-mcp node /app/dist/index.js list
@@ -90,6 +116,9 @@ docker logs -f cron-docs-mcp
 
 # View cron job logs (from host)
 tail -f logs/docs-mcp-refresh.log
+
+# View config watcher logs (monitors for config.json changes)
+docker exec cron-docs-mcp tail -f /var/log/docs-mcp-config-watcher.log
 
 # Check cron jobs
 docker exec cron-docs-mcp crontab -l
