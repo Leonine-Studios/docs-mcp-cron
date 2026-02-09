@@ -1,0 +1,20 @@
+# Sensitive files
+.env
+.env.*
+config.json
+
+# Git
+.git
+.github
+
+# Documentation
+README.md
+
+# Docker files
+docker-compose.yml
+docker-compose.dev.yml
+
+# Runtime data
+*.log
+logs/
+docs-mcp-data/

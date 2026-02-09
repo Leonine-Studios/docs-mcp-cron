@@ -1,20 +1,15 @@
 FROM ghcr.io/arabold/docs-mcp-server:latest
 
-# Install jq, cron, and inotify-tools (for file watching)
+# Install dependencies and set up log files in a single layer
 RUN apt-get update && \
     apt-get install -y jq cron inotify-tools && \
     apt-get clean && \
-    rm -rf /var/lib/apt/lists/*
+    rm -rf /var/lib/apt/lists/* && \
+    touch /var/log/docs-mcp-refresh.log /var/log/docs-mcp-config-watcher.log
 
-# Copy scripts into the container
-COPY scripts/scrape-or-refresh.sh /usr/local/bin/scrape-or-refresh.sh
-COPY scripts/sync-libraries.sh /usr/local/bin/sync-libraries.sh
-COPY scripts/watch-config.sh /usr/local/bin/watch-config.sh
-COPY scripts/entrypoint.sh /usr/local/bin/entrypoint.sh
-RUN chmod +x /usr/local/bin/scrape-or-refresh.sh /usr/local/bin/sync-libraries.sh /usr/local/bin/watch-config.sh /usr/local/bin/entrypoint.sh
-
-# Create log files for cron jobs and config watcher
-RUN touch /var/log/docs-mcp-refresh.log /var/log/docs-mcp-config-watcher.log
+# Copy all scripts at once (reduces layers from 4 to 1)
+COPY scripts/*.sh /usr/local/bin/
+RUN chmod +x /usr/local/bin/*.sh
 
 # Expect /config.json to be mounted at runtime
 # The entrypoint will validate and configure cron based on the config
