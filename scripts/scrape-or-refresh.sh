@@ -67,13 +67,9 @@ process_website() {
     
     if echo "$EXISTING_LIBS" | grep -q "^${name_lower}$"; then
         echo "Library exists - refreshing..."
-        if [ -n "$SCRAPER_ARGS" ]; then
-            echo "Using custom scraper settings: $SCRAPER_ARGS"
-            node /app/dist/index.js refresh "$name" $SCRAPER_ARGS
-        else
-            echo "Using default scraper settings"
-            node /app/dist/index.js refresh "$name"
-        fi
+        # Note: refresh command doesn't accept scraper settings (scope, maxPages, etc.)
+        # It uses the original scrape settings
+        node /app/dist/index.js refresh "$name"
     else
         echo "New library - performing initial scrape..."
         if [ -n "$SCRAPER_ARGS" ]; then
