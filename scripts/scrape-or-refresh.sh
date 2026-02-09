@@ -56,13 +56,16 @@ process_website() {
     echo "URL: $url"
     echo "========================================"
     
-    # Check if library already exists
-    EXISTING_LIBS=$(node /app/dist/index.js list 2>/dev/null || echo "")
+    # Check if library already exists (extract just the names from JSON)
+    EXISTING_LIBS=$(node /app/dist/index.js list 2>/dev/null | jq -r '.[].name' 2>/dev/null || echo "")
     
     # Build scraper arguments
     SCRAPER_ARGS=$(build_scraper_args "$website_json")
     
-    if echo "$EXISTING_LIBS" | grep -q "^$name$"; then
+    # Convert name to lowercase for comparison (libraries are stored lowercase)
+    name_lower=$(echo "$name" | tr '[:upper:]' '[:lower:]')
+    
+    if echo "$EXISTING_LIBS" | grep -q "^${name_lower}$"; then
         echo "Library exists - refreshing..."
         if [ -n "$SCRAPER_ARGS" ]; then
             echo "Using custom scraper settings: $SCRAPER_ARGS"

@@ -56,7 +56,7 @@ The scraper automatically indexes PDF files linked from HTML pages. For PDFs to 
 
 **Why this is needed:** The default scope is `"subpages"` which only follows links under the starting URL path. PDFs are often in different paths (like `/documents/`), so `"hostname"` allows following all links on the same domain.
 
-**Note:** Large PDFs may be skipped if they exceed the document size limit. Set `DOCS_MCP_SCRAPER_DOCUMENT_MAX_SIZE=52428800` (50MB) in your environment if needed.
+**Note:** Large PDFs may be skipped if they exceed the document size limit. Set `DOCS_MCP_SCRAPER_DOCUMENT_MAX_SIZE=52428800` (50MB) for example, or another size in your environment if needed.
 
 ## Deployment
 
@@ -84,6 +84,18 @@ services:
       - DOCS_MCP_SCRAPER_DOCUMENT_MAX_SIZE=${DOCS_MCP_SCRAPER_DOCUMENT_MAX_SIZE}
     restart: unless-stopped
 ```
+
+## Initial Setup
+
+After deploying, trigger the initial scraping:
+
+```bash
+docker exec cron-docs-mcp scrape-or-refresh.sh
+```
+
+This populates all enabled libraries. You can see the logs as it runs. Subsequent runs will be faster as it only refreshes changes instead of re-scraping everything.
+
+**Alternative:** Wait for the scheduled cron (default: 2 AM daily) to run automatically.
 
 ## Environment Variables
 
