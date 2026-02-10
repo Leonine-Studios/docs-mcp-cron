@@ -7,7 +7,7 @@ RUN apt-get update && \
     rm -rf /var/lib/apt/lists/* && \
     touch /var/log/docs-mcp-refresh.log /var/log/docs-mcp-config-watcher.log
 
-# Copy all scripts at once (reduces layers from 4 to 1)
+
 COPY scripts/*.sh /usr/local/bin/
 RUN chmod +x /usr/local/bin/*.sh
 

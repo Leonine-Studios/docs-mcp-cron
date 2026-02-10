@@ -18,9 +18,10 @@ if [ ! -f "$CONFIG_FILE" ]; then
     exit 1
 fi
 
-# Get list of all website names from config (both enabled and disabled)
+# Get list of enabled website names from config only
+# Disabled websites will be deleted from the library
 # Convert to lowercase for case-insensitive comparison (library names are stored lowercase)
-CONFIG_WEBSITES=$(jq -r '.websites[].name' "$CONFIG_FILE" | tr '[:upper:]' '[:lower:]' | sort)
+CONFIG_WEBSITES=$(jq -r '.websites[] | select(.enabled == true) | .name' "$CONFIG_FILE" | tr '[:upper:]' '[:lower:]' | sort)
 
 # Get list of existing libraries
 echo "Fetching existing libraries..."

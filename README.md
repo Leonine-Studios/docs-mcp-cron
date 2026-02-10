@@ -122,13 +122,22 @@ The system automatically keeps libraries in sync with your `config.json` in **re
 - **No Orphaned Data**: Only websites currently in your configuration will have libraries stored  
 - **Manual Sync**: You can also manually trigger sync anytime with: `docker exec cron-docs-mcp sync-libraries.sh`
 
+### Enabling and Disabling Websites
+
+The `enabled` flag in `config.json` controls whether a website is scraped and kept in the library:
+
+- **`enabled: true`** - Website is scraped/refreshed and data is kept
+- **`enabled: false`** - Library is **deleted immediately**
+
+When you re-enable a disabled website, it will be **scraped fresh from scratch** (not refreshed) on the next scrape run.
+
 ### How It Works:
 
-1. You edit `config.json` and remove a website
+1. You edit `config.json` and remove a website or set `enabled: false`
 2. The file watcher detects the change within seconds
 3. It validates the JSON syntax
 4. If valid, it automatically runs the sync script
-5. Orphaned libraries are deleted immediately
+5. Disabled or removed libraries are deleted immediately
 
 You can monitor the watcher logs:
 ```bash
