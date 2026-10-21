@@ -1,8 +1,12 @@
 FROM ghcr.io/arabold/docs-mcp-server:latest
 
-# Install dependencies and set up log files in a single layer
+# v3.3.0 switches to the unprivileged node user. Cron, crontab, and apt need root.
+USER root
+
+# trixie-slim has no bash. The scripts use a bash shebang.
+# --no-install-recommends avoids pulling an extra mail server in with cron.
 RUN apt-get update && \
-    apt-get install -y jq cron inotify-tools && \
+    apt-get install -y --no-install-recommends bash jq cron inotify-tools && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/* && \
     touch /var/log/docs-mcp-refresh.log /var/log/docs-mcp-config-watcher.log
